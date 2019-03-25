@@ -9,15 +9,15 @@ from redis import Redis
 
 
 broker_url = os.environ.get('AMQP_URL', 'amqp://')
-app = Celery("tasks",broker=broker_url, ignore_result=True, broker_heartbeat = None)
+app = Celery("worker",broker=broker_url, ignore_result=True, broker_heartbeat = None)
 app.conf.task_default_queue = 'default'
 app.conf.task_default_exchange = 'crawl-tasks'
 server = Flask(__name__)
 crawler_repo = Redis(
-    host=app.config['REDIS_DEFAULT_HOST'],
-    port=app.config['REDIS_DEFAULT_PORT'],
+    host=os.environ.get('REDIS_DEFAULT_HOST','localhost'),
+    port=os.environ.get('REDIS_DEFAULT_PORT',6379),
     db=0,
-    password=app.config['REDIS_DEFAULT_PASSWORD']) 
+    password=os.environ.get('REDIS_DEFAULT_PASSWORD','')) 
 
 
 @app.task()
