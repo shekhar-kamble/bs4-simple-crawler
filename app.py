@@ -17,9 +17,9 @@ crawler_repo = Redis(
 def crawl():
     req = request.get_data()
     crawl_url, depth = get_parameters(req)
-    public_id = str(uuid.uuid1)
+    public_id = str(uuid.uuid1())
     crawler_broker.delay(public_id, crawl_url, depth)
-    crawler_repo.set(public_id+":exists",True)
+    crawler_repo.set(public_id+":exists","true")
     data = {}
     data["public_id"] = public_id
     return jsonify(data)

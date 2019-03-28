@@ -12,6 +12,7 @@ broker_url = os.environ.get('AMQP_URL', 'amqp://')
 app = Celery("worker",broker=broker_url, ignore_result=True, broker_heartbeat = None)
 app.conf.task_default_queue = 'default'
 app.conf.task_default_exchange = 'crawl-tasks'
+logger = get_task_logger(__name__)
 server = Flask(__name__)
 crawler_repo = Redis(
     host=os.environ.get('REDIS_DEFAULT_HOST','localhost'),

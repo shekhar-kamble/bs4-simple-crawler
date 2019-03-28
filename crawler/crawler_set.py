@@ -15,7 +15,7 @@ def get_img_list(url_list):
             crawl_list = crawl_list + img_list
         except ValueError:
             pass
-        except urllib2.HTTPError:
+        except (urllib2.HTTPError, urllib2.URLError):
             http_error = True
         if len(crawl_list) == 0 and http_error:
             raise TypeError("Invalid url")
